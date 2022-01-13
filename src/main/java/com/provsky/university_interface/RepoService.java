@@ -34,42 +34,44 @@ public class RepoService {
         boolean b = true;
         while (b) {
             String userMessage = scanner.nextLine();
+            try {
+                if (userMessage.contains("Who is head of department")) {
+                    String departmentName = userMessage.replaceAll("Who is head of department ", "");
+                    Lector lector = getHeadOfDepartment(departmentName);
 
-            if (userMessage.contains("Who is head of department")) {
-                String departmentName = userMessage.replaceAll("Who is head of department ", "");
-                Lector lector = getHeadOfDepartment(departmentName);
+                    System.out.println("Head of " + departmentName + " department is " + lector.getName());
 
-                System.out.println("Head of " + departmentName + " department is " + lector.getName());
+                } else if (userMessage.contains("Show") && userMessage.contains("statistics.")) {
+                    String departmentName = userMessage.replaceAll("Show ", "").replaceAll(" statistics", "");
 
-            } else if (userMessage.contains("Show") && userMessage.contains("statistics.")) {
-                String departmentName = userMessage.replaceAll("Show ", "").replaceAll(" statistics", "");
+                    System.out.println(getStat(departmentName));
 
-                System.out.println(getStat(departmentName));
+                } else if (userMessage.contains("Show the average salary for the department")) {
+                    String departmentName = userMessage.replaceAll("Show the average salary for the department ", "");
 
-            } else if (userMessage.contains("Show the average salary for the department")) {
-                String departmentName = userMessage.replaceAll("Show the average salary for the department ", "");
+                    System.out.println(getAverageSalary(departmentName));
 
-                System.out.println(getAverageSalary(departmentName));
+                } else if (userMessage.contains("Show count of employee for")) {
+                    String departmentName = userMessage.replaceAll("Show count of employee for ", "");
 
-            } else if (userMessage.contains("Show count of employee for")) {
-                String departmentName = userMessage.replaceAll("Show count of employee for ", "");
+                    System.out.println(getDepartmentsEmployers(departmentName));
 
-                System.out.println(getDepartmentsEmployers(departmentName));
+                } else if (userMessage.contains("Global search by")) {
+                    String pattern = userMessage.replaceAll("Global search by ", "");
 
-            } else if (userMessage.contains("Global search by")) {
-                String pattern = userMessage.replaceAll("Global search by ", "");
+                    System.out.println(globalSearch(pattern));
 
-                System.out.println(globalSearch(pattern));
-
-            } else if (userMessage.equals("close")) {
-                b = false;
-                scanner.close();
-                System.exit(0);
-            } else {
-                System.out.println("Looks like I don't understand request.");
-                System.out.println("Check if syntax is ok: {" + userMessage + "}");
+                } else if (userMessage.equals("close")) {
+                    b = false;
+                    scanner.close();
+                    System.exit(0);
+                } else {
+                    System.out.println("Looks like I don't understand request.");
+                    System.out.println("Check if syntax is ok: {" + userMessage + "}");
+                }
+            }catch (NullPointerException e){
+                System.out.println("Request is ok, but department name is wrong");
             }
-
 
         }
     }
